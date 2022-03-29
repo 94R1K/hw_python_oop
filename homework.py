@@ -1,5 +1,4 @@
 from decimal import Decimal
-from typing import Final
 
 
 class InfoMessage:
@@ -28,7 +27,7 @@ class InfoMessage:
 
 class Training:
     """Базовый класс тренировки."""
-    M_IN_KM: Final = 1000
+    M_IN_KM: int = 1000
 
     def __init__(self,
                  action: int,
