@@ -17,7 +17,7 @@ class InfoMessage:
         self.calories = Decimal(calories)
 
     def get_message(self) -> str:
-        """"Получить сообщение о выполненной тренировке."""
+        """Получить сообщение о выполненной тренировке."""
         return (f'Тип тренировки: {self.training_type}; '
                 f'Длительность: {self.duration:.3f} ч.; '
                 f'Дистанция: {self.distance:.3f} км; '
@@ -28,6 +28,7 @@ class InfoMessage:
 class Training:
     """Базовый класс тренировки."""
     M_IN_KM: int = 1000
+    LEN_STEP: float = 0.65
 
     def __init__(self,
                  action: int,
@@ -37,7 +38,6 @@ class Training:
         self.action = action
         self.duration = duration
         self.weight = weight
-        self.LEN_STEP = 0.65
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
@@ -53,7 +53,7 @@ class Training:
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        return InfoMessage(training_type=workout_type,
+        return InfoMessage(training_type=self.__class__.__name__,
                            duration=self.duration,
                            distance=self.get_distance(),
                            speed=self.get_mean_speed(),
@@ -94,6 +94,8 @@ class SportsWalking(Training):
 
 class Swimming(Training):
     """Тренировка: плавание."""
+    LEN_STEP: float = 1.38
+
     def __init__(self,
                  action: int,
                  duration: float,
@@ -102,7 +104,6 @@ class Swimming(Training):
                  count_pool: int,
                  ) -> None:
         super().__init__(action, duration, weight)
-        self.LEN_STEP: float = 1.38
         self.length_pool = length_pool
         self.count_pool = count_pool
 
