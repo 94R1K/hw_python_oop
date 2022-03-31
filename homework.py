@@ -54,14 +54,14 @@ class Running(Training):
     """Тренировка: бег."""
     COEFF_CALORIE_1: ClassVar[int] = 18
     COEFF_CALORIE_2: ClassVar[int] = 20
-    COEFF_CALORIE_3: ClassVar[int] = 60
+    HOURS_TO_MINUTES: ClassVar[int] = 60
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при беге."""
         average_speed: float = self.get_mean_speed()
         return ((self.COEFF_CALORIE_1 * average_speed - self.COEFF_CALORIE_2)
                 * self.weight / self.M_IN_KM
-                * (self.duration * self.COEFF_CALORIE_3))
+                * (self.duration * self.HOURS_TO_MINUTES))
 
 
 @dataclass
@@ -69,10 +69,7 @@ class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
     COEFF_CALORIE_1: ClassVar[float] = 0.035
     COEFF_CALORIE_2: ClassVar[float] = 0.029
-    COEFF_CALORIE_3: ClassVar[int] = 60
-    action: int
-    duration: float
-    weight: float
+    HOURS_TO_MINUTES: ClassVar[int] = 60
     height: int
 
     def get_spent_calories(self) -> float:
@@ -81,7 +78,7 @@ class SportsWalking(Training):
         return ((self.COEFF_CALORIE_1 * self.weight
                  + (average_speed**2 // self.height)
                  * self.COEFF_CALORIE_2 * self.weight)
-                * (self.duration * self.COEFF_CALORIE_3))
+                * (self.duration * self.HOURS_TO_MINUTES))
 
 
 @dataclass
@@ -90,9 +87,6 @@ class Swimming(Training):
     COEFF_CALORIE_1: ClassVar[float] = 1.1
     COEFF_CALORIE_2: ClassVar[int] = 2
     LEN_STEP: ClassVar[float] = 1.38
-    action: int
-    duration: float
-    weight: float
     length_pool: int
     count_pool: int
 
@@ -121,8 +115,11 @@ def read_package(workout_type: str, data: list) -> Training:
 
 def main(training: Training) -> None:
     """Главная функция."""
-    info: InfoMessage = training.show_training_info()
-    print(info.get_message())
+    try:
+        info: InfoMessage = training.show_training_info()
+        print(info.get_message())
+    except AttributeError:
+        print(f'Тип тренировки: {workout_type} не подошёл!')
 
 
 if __name__ == '__main__':
