@@ -111,15 +111,13 @@ def read_package(workout_type: str, data: list) -> Training:
     for workout, workout_class in conformity.items():
         if workout in workout_type:
             return workout_class(*data)
+    raise AttributeError(f'Тип тренировки: {workout_type} не подошёл!')
 
 
 def main(training: Training) -> None:
     """Главная функция."""
-    try:
-        info: InfoMessage = training.show_training_info()
-        print(info.get_message())
-    except AttributeError:
-        print(f'Тип тренировки: {workout_type} не подошёл!')
+    info: InfoMessage = training.show_training_info()
+    print(info.get_message())
 
 
 if __name__ == '__main__':
